@@ -1,0 +1,26 @@
+{
+    "name": "nadar/ifw",
+    "authors": [
+        {
+            "name": "nadar",
+            "homepage": "https://github.com/nadar",
+            "role": "Creator"
+        }
+    ],
+    "require": {
+        "php": ">=5.4"
+    },
+    "require-dev": {
+        "fabpot/php-cs-fixer": "@stable",
+        "phpunit/phpunit": "@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "ifw\\": "framework/",
+            "test\\" : "modules/test"
+        }
+    },
+    "config": {
+      "bin-dir": "bin"
+    }
+}
