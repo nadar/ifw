@@ -3,6 +3,7 @@ namespace test;
 
 class Module extends \ifw\core\Module
 {
+    /*
     public function init()
     {
         $this->on(self::EVENT_BEFORE_CONTROLLER, function ($context) {
@@ -11,6 +12,7 @@ class Module extends \ifw\core\Module
             return true;
         });
     }
+    */
 
     public $foo = 'bar';
 }

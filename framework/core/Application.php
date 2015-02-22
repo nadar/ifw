@@ -3,7 +3,7 @@ namespace ifw\core;
 
 class Application extends \ifw\core\Component
 {
-    private $_components = [];
+    public $components = [];
 
     public $di = null;
 
@@ -17,15 +17,16 @@ class Application extends \ifw\core\Component
             'di' => new \ifw\core\DiContainer(),
         ]);
 
-        $this->addComponent('request', '\\ifw\\components\\Request');
-
         $this->parseModules();
+        $this->parseComponents();
+        
+        $this->addComponent('request', '\\ifw\\components\\Request');
     }
 
     public function __get($key)
     {
-        if ($this->has($key)) {
-            return $this->get($key);
+        if ($this->hasComponent($key)) {
+            return $this->getComponent($key);
         }
 
         parent::__get($key);
@@ -34,6 +35,9 @@ class Application extends \ifw\core\Component
     public function parseModules()
     {
         foreach ($this->modules as $id => $config) {
+            if (!isset($config['class'])) {
+                throw new \Exception('the module does not have class property');
+            }
             $className = $config['class'];
             unset($config['class']);
             $this->di->add('modules.'.$id, $className, $config);
@@ -50,15 +54,27 @@ class Application extends \ifw\core\Component
         return array_key_exists($id, $this->modules);
     }
 
+    public function parseComponents()
+    {
+        foreach ($this->components as $id => $config) {
+            if (!isset($config['class'])) {
+                throw new \Exception('the component does not have class property');
+            }
+            $className = $config['class'];
+            unset($config['class']);
+            $this->addComponent($id, $className, $config);
+        }
+    }
+    
     public function addComponent($id, $class, array $params = [])
     {
         $this->di->add('components.'.$id, $class, $params);
-        $this->_components[] = $id;
+        $this->components[] = $id;
     }
 
     public function hasComponent($id)
     {
-        return in_array($id, $this->_components);
+        return in_array($id, $this->components);
     }
 
     public function getComponent($id)
