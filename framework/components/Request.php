@@ -1,7 +1,6 @@
 <?php
 namespace ifw\components;
 
-class Request 
+class Request
 {
-    
 }

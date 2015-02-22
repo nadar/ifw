@@ -3,7 +3,7 @@ namespace ifw\core;
 
 class Event extends \ifw\core\Component
 {
-    protected  $context = null;
+    protected $context = null;
     
     public function setContext($context)
     {
