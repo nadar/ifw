@@ -1,7 +1,7 @@
 <?php
 namespace ifw\core;
 
-class Event extends \ifw\core\Component
+abstract class Event extends \ifw\core\Component
 {
     protected $context = null;
     

@@ -21,6 +21,15 @@ class Application extends \ifw\core\Component
         $this->parseComponents();
         
         $this->addComponent('request', '\\ifw\\components\\Request');
+        $this->addComponent('routing', '\\ifw\\components\\Routing');
+        
+        if (empty($this->defaultModule)) {
+            throw new \Exception("Property defaultModule must be set.");
+        }
+        
+        if (empty($this->modules)) {
+            throw new \Exception("At least one modules need to be set.");
+        }
     }
 
     public function __get($key)
@@ -84,7 +93,8 @@ class Application extends \ifw\core\Component
 
     public function run()
     {
-        return $this->runRoute('test', 'index', 'index');
+        $route = $this->routing->getRouting($this, $this->request);
+        return $this->runRoute($route[0], $route[1], $route[2]);
     }
 
     public function runRoute($module, $controller, $action)
