@@ -5,6 +5,6 @@ class IndexController extends \ifw\core\Controller
 {
     public function actionIndex()
     {
-        return \ifw::$app->request->get('test', false);
+        return $this->render('test.php');
     }
 }

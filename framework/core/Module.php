@@ -5,11 +5,13 @@ class Module extends \ifw\core\Component
 {
     const EVENT_BEFORE_CONTROLLER = 'EVENT_BEFORE_CONTROLLER';
 
+    public $id = null;
+    
     public function runController($controllerName)
     {
         $className = $this->getClassNamespace().'\\controllers\\'.$controllerName.'Controller';
         $this->dispatchEvent(self::EVENT_BEFORE_CONTROLLER);
 
-        return new $className(['module' => $this]);
+        return new $className(['module' => $this, 'id' => $controllerName]);
     }
 }

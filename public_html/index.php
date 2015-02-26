@@ -17,5 +17,7 @@ try {
 
     echo ifw::$app->run();
 } catch (Exception $e) {
-    var_dump($e->getMessage());
+    echo "<pre>";
+    print_r($e);
+    echo "</pre>";
 }

@@ -11,8 +11,13 @@ class Application extends \ifw\core\Component
 
     public $defaultModule = null;
 
+    public $aliases = [];
+    
     public function init()
     {
+        $this->setAlias('app', realpath(getcwd())); // go back
+        $this->setAlias('views', '@app/views');
+        
         $this->parsePropertys([
             'di' => new \ifw\core\DiContainer(),
         ]);
@@ -22,6 +27,7 @@ class Application extends \ifw\core\Component
         
         $this->addComponent('request', '\\ifw\\components\\Request');
         $this->addComponent('routing', '\\ifw\\components\\Routing');
+        $this->addComponent('view', '\\ifw\\components\\View');
         
         if (empty($this->defaultModule)) {
             throw new \Exception("Property defaultModule must be set.");
@@ -49,7 +55,7 @@ class Application extends \ifw\core\Component
             }
             $className = $config['class'];
             unset($config['class']);
-            $this->di->add('modules.'.$id, $className, $config);
+            $this->di->add('modules.'.$id, $className, array_merge($config, ['id' => $id]));
         }
     }
 
@@ -91,14 +97,30 @@ class Application extends \ifw\core\Component
         return ($this->hasComponent($id)) ? $this->di->get('components.'.$id) : false;
     }
 
+    public function runRoute($module, $controller, $action)
+    {
+        return $this->getModule($module)->runController($controller)->runAction($action);
+    }
+    
     public function run()
     {
         $route = $this->routing->getRouting($this, $this->request);
         return $this->runRoute($route[0], $route[1], $route[2]);
     }
-
-    public function runRoute($module, $controller, $action)
+    
+    public function setAlias($alias, $path)
     {
-        return $this->getModule($module)->runController($controller)->runAction($action);
+        $this->aliases[$alias] = $this->getAlias($path);
+    }
+    
+    public function getAlias($find)
+    {
+        $_search = [];
+        $_replace = [];
+        foreach ($this->aliases as $alias => $path) {
+            $_search[] = "@" .$alias;
+            $_replace[] = $path;
+        }
+        return str_replace($_search, $_replace, $find);
     }
 }
