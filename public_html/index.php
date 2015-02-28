@@ -7,6 +7,7 @@ require_once '../framework/ifw.php';
 
 try {
     ifw::init([
+        'basePath' => dirname(__DIR__),
         'defaultModule' => 'test',
         'modules' => [
             'test' => [

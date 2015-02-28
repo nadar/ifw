@@ -13,9 +13,15 @@ class Application extends \ifw\core\Component
 
     public $aliases = [];
     
+    public $basePath = null;
+    
     public function init()
     {
-        $this->setAlias('app', realpath(getcwd())); // go back
+        if (empty($this->basePath)) {
+            throw new \Exception("The base path directory must be set");
+        }
+        
+        $this->setAlias('app', realpath($this->basePath)); // go back
         $this->setAlias('views', '@app/views');
         
         $this->parsePropertys([

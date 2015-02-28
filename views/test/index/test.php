@@ -1,0 +1,1 @@
+hello controller <strong><?php echo $id; ?></strong>!
