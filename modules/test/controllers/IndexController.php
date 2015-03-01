@@ -9,4 +9,9 @@ class IndexController extends \ifw\core\Controller
     {
         return $this->render('test.php', ['id' => $this->id]);
     }
+    
+    public function actionSub()
+    {
+        return $this->render('sub.php', ['id' => $this->id]);
+    }
 }

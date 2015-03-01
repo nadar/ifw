@@ -14,5 +14,10 @@ class Module extends \ifw\core\Module
     }
     */
 
-    public $foo = 'bar';
+    public function getRules()
+    {
+        return [
+            ['rule' => 'test/index/sub', 'pattern' => 'foobar']
+        ];
+    }
 }

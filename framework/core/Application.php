@@ -21,6 +21,14 @@ class Application extends \ifw\core\Component
             throw new \Exception("The base path directory must be set");
         }
         
+        if (empty($this->defaultModule)) {
+            throw new \Exception("Property defaultModule must be set.");
+        }
+        
+        if (empty($this->modules)) {
+            throw new \Exception("At least one modules need to be set.");
+        }
+        
         $this->setAlias('app', realpath($this->basePath)); // go back
         $this->setAlias('views', '@app/views');
         
@@ -35,13 +43,6 @@ class Application extends \ifw\core\Component
         $this->addComponent('routing', '\\ifw\\components\\Routing');
         $this->addComponent('view', '\\ifw\\components\\View');
         
-        if (empty($this->defaultModule)) {
-            throw new \Exception("Property defaultModule must be set.");
-        }
-        
-        if (empty($this->modules)) {
-            throw new \Exception("At least one modules need to be set.");
-        }
     }
 
     public function __get($key)
