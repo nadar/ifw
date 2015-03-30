@@ -10,18 +10,32 @@ class DiContainer
         return $this->get($key);
     }
 
-    public function add($id, $className, array $params = [])
+    /**
+     * We have no add() and append() method, we only use an append() method, cause its common
+     * to merge di container params before instanciate with get($id).
+     * 
+     * Always remove the class parameter from the params array if there is any.
+     */
+    public function append($id, $className = null, array $params = [])
     {
-        if ($this->has($id)) {
-            throw new \Exception('container already registered');
+        if (isset($params['class'])) {
+            unset($params['class']);
         }
-
-        static::$containers[$id] = [
-            'id' => $id,
-            'className' => $className,
-            'params' => $params,
-            'object' => null,
-        ];
+        
+        if ($this->has($id)) {
+            static::$containers[$id] = [
+                'className' => $className,
+                'params' => array_merge(static::$containers[$id]['params'], $params),
+                'object' => null,
+            ];
+        } else {
+            static::$containers[$id] = [
+                'id' => $id,
+                'className' => $className,
+                'params' => $params,
+                'object' => null,
+            ];
+        }
     }
 
     public function get($id)

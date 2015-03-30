@@ -25,6 +25,9 @@ class Object
 
     public function __get($key)
     {
+        if (!$this->hasProperty($key)) {
+            throw new \Exception("The requested property '$key' does not exists in the class '" . $this->getClass() . '"');
+        }
         return $this->$key;
     }
 

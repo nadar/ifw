@@ -42,7 +42,7 @@ class Application extends \ifw\core\Component
         $this->addComponent('request', '\\ifw\\components\\Request');
         $this->addComponent('routing', '\\ifw\\components\\Routing');
         $this->addComponent('view', '\\ifw\\components\\View');
-        
+        $this->addComponent('db', '\\ifw\\components\\Db');
     }
 
     public function __get($key)
@@ -60,9 +60,7 @@ class Application extends \ifw\core\Component
             if (!isset($config['class'])) {
                 throw new \Exception('the module does not have class property');
             }
-            $className = $config['class'];
-            unset($config['class']);
-            $this->di->add('modules.'.$id, $className, array_merge($config, ['id' => $id]));
+            $this->di->append('modules.'.$id, $config['class'], array_merge($config, ['id' => $id]));
         }
     }
 
@@ -79,19 +77,17 @@ class Application extends \ifw\core\Component
     public function parseComponents()
     {
         foreach ($this->components as $id => $config) {
-            if (!isset($config['class'])) {
-                throw new \Exception('the component does not have class property');
-            }
-            $className = $config['class'];
-            unset($config['class']);
-            $this->addComponent($id, $className, $config);
+            $this->addComponent($id, (isset($config['class'])) ? $config['class'] : null, $config);
         }
     }
     
-    public function addComponent($id, $class, array $params = [])
+    public function addComponent($id, $class = null, array $params = [])
     {
-        $this->di->add('components.'.$id, $class, $params);
-        $this->components[] = $id;
+        $this->di->append('components.'.$id, $class, $params);
+        
+        if (!$this->hasComponent($id)) {
+            $this->components[] = $id;
+        }
     }
 
     public function hasComponent($id)
