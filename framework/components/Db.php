@@ -3,6 +3,25 @@ namespace ifw\components;
 
 use ifw\core\Exception;
 
+/**
+ * Query the datbase with an sql statement and fetch the results.
+ * 
+ * The below example shows how the fetch all results into an array.
+ * 
+ * ```php
+ *     $data = \ifw::$app->db->query("SELECT * FROM xyz")->fetchAll();
+ * ``
+ * 
+ * The faster approach the retrieve data row by row like this:
+ * ```php
+ * while($data = \ifw::$app->db->query("SELECT * FROM xyz")->fetch()) {
+ *     var_dump($data);
+ * }
+ * ``
+ * 
+ * @author nadar
+ *
+ */
 class Db extends \ifw\core\Component
 {
     public $dsn = null;
@@ -34,7 +53,7 @@ class Db extends \ifw\core\Component
         $this->_stmt = null;
         $this->_stmt = $this->_dbo->prepare($statement);
         foreach($params as $key => $value) {
-            $query->bindParam($key, $value);
+            $this->_stmt->bindParam(":" . $key, $value);
         }
         $this->_stmt->execute();
         return $this;
@@ -43,6 +62,16 @@ class Db extends \ifw\core\Component
     public function getStatement()
     {
         return $this->_stmt;
+    }
+    
+    public function insert($tableName, array $params)
+    {
+        
+    }
+    
+    public function update($tableName, array $params)
+    {
+        
     }
     
     public function fetch($fetchMode = \PDO::FETCH_ASSOC)
