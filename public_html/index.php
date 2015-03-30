@@ -9,6 +9,13 @@ try {
     ifw::init([
         'basePath' => dirname(__DIR__),
         'defaultModule' => 'test',
+        'components' => [
+            'db' => [
+                'dsn' => 'mysql:host=localhost;dbname=ifw',
+                'user' => 'root',
+                'password' => 'root',
+            ]
+        ],
         'modules' => [
             'test' => [
                 'class' => '\\test\\Module',
