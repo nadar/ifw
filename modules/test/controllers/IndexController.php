@@ -1,15 +1,32 @@
 <?php
 namespace test\controllers;
 
+use Ifw;
+
 class IndexController extends \ifw\core\Controller
 {
     public $layout = 'main.php';
     
-    public function actionIndex()
+    public function getActions()
     {
-        return $this->render('test.php', ['id' => $this->id]);
+        return [
+            'index' => [
+                'class' => 'test\actions\IndexAction',
+                'arg1' => 'foo:bar'
+            ]
+        ];
     }
     
+    /*
+    public function actionIndex()
+    {
+        $data = (new \ifw\db\Query())->select(['id', 'name', 'street' => 'Strasse'])->from('xyz')->where(['id' => 1])->query();
+        
+        var_dump($data->fetchAll());
+        
+        return $this->render('test.php', ['id' => $this->id]);
+    }
+    */
     public function actionSub()
     {
         return $this->render('sub.php', ['id' => $this->id]);
