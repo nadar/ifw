@@ -17,7 +17,7 @@ class Object
     public function __set($key, $value)
     {
         if (!$this->hasProperty($key)) {
-            throw new \Exception("The property $key does not exists");
+            throw new \Exception("The property '$key' does not exists inside of the class '" . $this->getClass() . "'");
         }
 
         $this->$key = $value;
