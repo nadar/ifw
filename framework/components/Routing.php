@@ -7,6 +7,11 @@ class Routing extends \ifw\core\Component
     
     public $rules = [];
     
+    public function addRule($route, $pattern)
+    {
+        $this->rules[] = ['route' => $route, 'pattern' => $pattern];
+    }
+    
     public function parseRules($matchingRoute)
     {
         if (!$matchingRoute) {
