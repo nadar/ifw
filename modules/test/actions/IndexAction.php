@@ -9,6 +9,9 @@ class IndexAction extends \ifw\core\Action
     
     public function run()
     {
-        return 'hello world! ' . $this->arg1;
+        $model = new \test\models\Abc();
+        $model->setAttribute('var1', 'ja');
+        $model->validate();
+        
     }
 }

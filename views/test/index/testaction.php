@@ -1,0 +1,1 @@
+index action of index controller in module test

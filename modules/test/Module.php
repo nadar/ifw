@@ -20,4 +20,9 @@ class Module extends \ifw\core\Module
             ['rule' => 'test/index/sub', 'pattern' => 'foobar']
         ];
     }
+    
+    public static function bootstrap($app)
+    {
+        $app->routing->addRule('route', 'pattern');
+    }
 }
