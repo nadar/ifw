@@ -43,6 +43,8 @@ class Application extends \ifw\core\Component
         $this->addComponent('routing', '\\ifw\\components\\Routing');
         $this->addComponent('view', '\\ifw\\components\\View');
         $this->addComponent('db', '\\ifw\\components\\Db');
+        
+        $this->bootstrap();
     }
 
     public function __get($key)
@@ -64,6 +66,14 @@ class Application extends \ifw\core\Component
         }
     }
 
+    public function bootstrap()
+    {
+        foreach ($this->modules as $config) {
+            $className = $config['class'];
+            $className::bootstrap($this);
+        }
+    }
+    
     public function getModule($id)
     {
         return ($this->hasModule($id)) ? $this->di->get('modules.'.$id) : false;

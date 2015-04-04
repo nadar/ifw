@@ -14,4 +14,9 @@ class Module extends \ifw\core\Component
 
         return new $className(['module' => $this, 'id' => $controllerName]);
     }
+    
+    public static function bootstrap($app)
+    {
+        // override
+    }
 }
