@@ -35,6 +35,16 @@ class Object
     {
         return get_class($this);
     }
+    
+    public function getClassNamespace()
+    {
+        return implode("\\", array_slice(explode('\\', $this->getClass()), 0, -1));
+    }
+    
+    public function getPropertys()
+    {
+        return get_class_vars($this->getClass());
+    }
 
     public function parsePropertys(array $propertys)
     {
@@ -46,11 +56,6 @@ class Object
     public function hasProperty($key)
     {
         return property_exists($this->getClass(), $key);
-    }
-
-    public function getClassNamespace()
-    {
-        return implode("\\", array_slice(explode('\\', $this->getClass()), 0, -1));
     }
 
     public function hasMethod($methodName)
