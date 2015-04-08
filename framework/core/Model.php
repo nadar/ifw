@@ -14,6 +14,8 @@ abstract class Model extends \ifw\core\Component
 {
     public $scenario = 'default';
     
+    public $errors = [];
+    
     /**
      * See if the attribute key exists as a class property and set the value.
      * 
@@ -42,13 +44,32 @@ abstract class Model extends \ifw\core\Component
         }
     }
     
+    public function getAttribute($key)
+    {
+        if ($this->hasProperty($key)) {
+            return $this->$key;
+        }
+        
+        return false;
+    }
+    
+    public function addError($field, $message)
+    {
+        $this->errors[$field][] = $message;
+    }
+    
+    public function getErrors()
+    {
+        return $this->errors;
+    }
+    
     /**
      * 
      * ``````php
      * return [
-     *     'filterName' => ['prop1', 'prop2'],
-     *     ['filterName', ['prop1', 'prop2']],
-     *     ['filterName', ['prop1', 'prop2'], 'on' => 'scenarioName']
+     *     'validatorName' => ['prop1', 'prop2'],
+     *     ['validatorName', ['prop1', 'prop2']],
+     *     ['validatorName', ['prop1', 'prop2'], 'on' => 'scenarioName']
      * ];
      * `````
      * @return multitype:
@@ -65,6 +86,7 @@ abstract class Model extends \ifw\core\Component
      */
     public function validate()
     {
+        $error = false;
         foreach ($this->rules() as $k => $v) {
             if (is_int($k)) {
                 $filterName = $v[0];
@@ -80,7 +102,29 @@ abstract class Model extends \ifw\core\Component
                 $filterProps = $v;
             }
             
-            // validate $filterProps against $filterName
+            if (!is_array($filterProps)) {
+                throw new \Exception("prop must be an array");
+            }
+            
+            foreach ($filterProps as $attribute)
+            {
+                if (!$this->validator($filterName, $this->getAttribute($attribute))) {
+                    $error = true;
+                    $this->addError($attribute, "validator $filterName error");
+                }
+            }
+        }
+        
+        return !$error;
+    }
+    
+    private function validator($name, $values)
+    {
+        if ($this->hasMethod($name)) {
+            return $this->$name($values);
+        } else {
+            $className = '\\ifw\\validators\\' . $name;
+            return (new $className)->run($values);
         }
     }
 }
