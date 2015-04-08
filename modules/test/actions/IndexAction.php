@@ -10,8 +10,10 @@ class IndexAction extends \ifw\core\Action
     public function run()
     {
         $model = new \test\models\Abc();
-        $model->setAttribute('var1', 'ja');
-        $model->validate();
+        $model->setAttribute('title', 'Herr');
+        $model->name = 'Radan';
+        $v = $model->validate();
+        var_dump($model->getErrors());
         
     }
 }

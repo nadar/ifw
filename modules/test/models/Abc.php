@@ -3,18 +3,20 @@ namespace test\models;
 
 class Abc extends \ifw\core\Model
 {
-    public $var1;
+    public $title;
     
-    public $var2;
+    public $name;
+    
+    public $mail;
     
     public $text;
     
     public function rules()
     {
         return [
-            'required' => ['prop1', 'prop2'],
-            ['mail', ['prop1']],
-            ['safe', ['prop1', 'prop2'], 'on' => 'default']
+            'required' => ['email', 'name'],
+            ['email', ['email']],
+            ['safe', ['title', 'text'], 'on' => 'default']
         ];
     }
 }
