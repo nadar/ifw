@@ -79,18 +79,13 @@ abstract class Model extends \ifw\core\Component
         return [];
     }
     
-    /**
-     * match and validate the current scenario rules against propertys
-     * 
-     * @todo 
-     */
-    public function validate()
+    public function getValidators()
     {
-        $error = false;
+        $validators = [];
         foreach ($this->rules() as $k => $v) {
             if (is_int($k)) {
                 $filterName = $v[0];
-                $filterProps = $v[1];
+                $attributes = $v[1];
                 if(isset($v['on'])) {
                     $scenarion = $v['on'];
                     if ($scenarion !== $this->scenario) {
@@ -99,22 +94,32 @@ abstract class Model extends \ifw\core\Component
                 }
             } else {
                 $filterName = $k;
-                $filterProps = $v;
+                $attributes = $v;
             }
             
-            if (!is_array($filterProps)) {
-                throw new \Exception("prop must be an array");
-            }
-            
-            foreach ($filterProps as $attribute)
-            {
-                if (!$this->validator($filterName, $this->getAttribute($attribute))) {
+            $validators[$filterName] = $attributes;
+        }
+        
+        return $validators;
+    }
+    
+    /**
+     * match and validate the current scenario rules against propertys
+     * 
+     * @todo 
+     */
+    public function validate()
+    {
+        $error = false;
+        foreach ($this->getValidators() as $validator => $attributes) {
+            foreach ($attributes as $attribute) {
+                $validationResponse = $this->validator($validator, $this->getAttribute($attribute));
+                if ($validationResponse !== null & !$validationResponse) {
                     $error = true;
-                    $this->addError($attribute, "validator $filterName error");
+                    $this->addError($attribute, "validator '$validator' error");
                 }
             }
         }
-        
         return !$error;
     }
     

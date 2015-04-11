@@ -14,8 +14,8 @@ class Abc extends \ifw\core\Model
     public function rules()
     {
         return [
-            'required' => ['email', 'name'],
-            ['email', ['email']],
+            'required' => ['mail', 'name'],
+            ['email', ['mail']],
             ['safe', ['title', 'text'], 'on' => 'default']
         ];
     }
