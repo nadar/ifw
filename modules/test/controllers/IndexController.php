@@ -11,8 +11,8 @@ class IndexController extends \ifw\core\Controller
     {
         return [
             'index' => [
-                'class' => 'test\actions\IndexAction',
-                'arg1' => 'foo:bar'
+                'class' => 'test\actions\ArAction',
+                // 'class' => 'test\actions\IndexAction',
             ]
         ];
     }
