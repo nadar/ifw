@@ -7,4 +7,11 @@ class ActiveXyz extends \ifw\db\ActiveRecord
     {
         return 'xyz';
     }
+    
+    public function rules()
+    {
+        return [
+            "required" => ['name']
+        ];
+    }
 }
