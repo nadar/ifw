@@ -36,6 +36,11 @@ class Object
         return get_class($this);
     }
     
+    public static function className()
+    {
+        return get_called_class();
+    }
+    
     public function getClassNamespace()
     {
         return implode("\\", array_slice(explode('\\', $this->getClass()), 0, -1));

@@ -25,10 +25,11 @@ abstract class Model extends \ifw\core\Component
      */
     public function setAttribute($key, $value)
     {
+        /*
         if (!$this->hasProperty($key)) {
             throw new \ifw\core\Exception("The attribute property $key does not exsists in the model class " . $this->getClass());
         }
-        
+        */
         $this->$key = $value;
     }
     
@@ -46,11 +47,7 @@ abstract class Model extends \ifw\core\Component
     
     public function getAttribute($key)
     {
-        if ($this->hasProperty($key)) {
-            return $this->$key;
-        }
-        
-        return false;
+        return $this->$key;
     }
     
     public function addError($field, $message)
