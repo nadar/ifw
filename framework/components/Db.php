@@ -9,12 +9,12 @@ use ifw\core\Exception;
  * The below example shows how the fetch all results into an array.
  * 
  * ```php
- *     $data = \ifw::$app->db->query("SELECT * FROM xyz")->fetchAll();
+ *     $data = \ifw::$app->db->command()->query("SELECT * FROM xyz")->fetchAll();
  * ``
  * 
  * The faster approach the retrieve data row by row like this:
  * ```php
- * while($data = \ifw::$app->db->query("SELECT * FROM xyz")->fetch()) {
+ * while($data = \ifw::$app->db->command()->query("SELECT * FROM xyz")->fetch()) {
  *     var_dump($data);
  * }
  * ``
@@ -48,45 +48,22 @@ class Db extends \ifw\core\Component
         }
     }
     
-    public function query($statement, array $params = [])
+    public function getConnection()
     {
-        $this->_stmt = null;
-        $this->_stmt = $this->_dbo->prepare($statement);
-        foreach($params as $key => $value) {
-            $this->_stmt->bindParam(":" . $key, $value);
+        return $this->_dbo;
+    }
+    
+    public function command()
+    {
+        try {
+            return \ifw::createObject('\\ifw\\db\\Command', ['dbo' => $this->getConnection()]);
+            //return $this;
+        } catch (\PDOException $e) {
+            throw new Exception($e->getMessage());
         }
-        $this->_stmt->execute();
-        return $this;
-    }
-    
-    public function getStatement()
-    {
-        return $this->_stmt;
-    }
-    
-    public function insert($tableName, array $params)
-    {
         
     }
-    
-    public function update($tableName, array $params)
-    {
-        
-    }
-    
-    public function fetch($fetchMode = \PDO::FETCH_ASSOC)
-    {
-        return $this->_stmt->fetch($fetchMode);
-    }
-    
-    public function fetchAll($fetchMode = \PDO::FETCH_ASSOC)
-    {
-        $response = $this->_stmt->fetchAll($fetchMode);
-        $this->_stmt->closeCursor();
-        $this->_stmt = null;
-        return $response;
-    }
-    
+   
     public function closeConnection()
     {
         $this->_dbo = null;

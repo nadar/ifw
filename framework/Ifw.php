@@ -5,6 +5,11 @@ class Ifw
 
     public static function init(array $config = [])
     {
-        return static::$app = new \ifw\core\Application($config);
+        return static::$app = static::createObject('\ifw\core\Application', $config);
+    }
+    
+    public static function createObject($class, array $params = [])
+    {
+        return new $class($params);
     }
 }

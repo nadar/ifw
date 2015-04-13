@@ -10,7 +10,7 @@ use Ifw;
  * ```
  * @author nadar
  */
-class Query extends \ifw\core\Component
+class Query extends \ifw\core\Object
 {   
     private $_params = [];
 
@@ -118,6 +118,6 @@ class Query extends \ifw\core\Component
     
     public function query()
     {
-        return Ifw::$app->db->query($this->getStatement(), $this->getParams());
+        return Ifw::$app->db->command()->query($this->getStatement(), $this->getParams());
     }
 }

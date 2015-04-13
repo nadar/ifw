@@ -14,6 +14,8 @@ abstract class Model extends \ifw\core\Component
 {
     public $scenario = 'default';
     
+    public $safeAttributes = [];
+    
     public $errors = [];
     
     /**
@@ -100,6 +102,18 @@ abstract class Model extends \ifw\core\Component
         return $validators;
     }
     
+    public function addSafeAttribute($attribute)
+    {
+        if (!in_array($attribute, $this->safeAttributes)) {
+            $this->safeAttributes[] = $attribute;
+        }
+    }
+    
+    public function getSafeAttributes()
+    {
+        return $this->safeAttributes;
+    }
+    
     /**
      * match and validate the current scenario rules against propertys
      * 
@@ -113,11 +127,19 @@ abstract class Model extends \ifw\core\Component
                 $validationResponse = $this->validator($validator, $this->getAttribute($attribute));
                 if ($validationResponse !== null & !$validationResponse) {
                     $error = true;
-                    $this->addError($attribute, "validator '$validator' error");
+                    $this->addError($attribute, "validator '$validator' error on attribute '$attribute'");
+                } else {
+                    $this->addSafeAttribute($attribute);
                 }
             }
         }
         return !$error;
+    }
+    
+    public function resetValidation()
+    {
+        $this->safeAttributes = [];
+        $this->errors = [];
     }
     
     private function validator($name, $values)
