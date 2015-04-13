@@ -11,7 +11,7 @@ class ActiveXyz extends \ifw\db\ActiveRecord
     public function rules()
     {
         return [
-            "required" => ['name']
+            "required" => ['name', 'street']
         ];
     }
 }
