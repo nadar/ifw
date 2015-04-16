@@ -4,7 +4,66 @@ namespace ifw\core;
 class Component extends \ifw\core\Object
 {
     private $_events = [];
+    
+    private $_behaviors = null;
 
+    public function init()
+    {
+        parent::init();
+        $this->attachBehaviors();
+    }
+    
+    public function __clone()
+    {
+        $this->_events = [];
+        $this->_behaviors = null;
+    }
+    
+    // behavior based methods
+    
+    /**
+     * behavior array returns to to attache behaviors:
+     * ```php
+     * return [
+     *     '\\example\\behavior'
+     * ]
+     * ```
+     * 
+     * you can also provided class with configurable propertys:
+     * ```php
+     * return [
+     *     ['class' => '\\example\\behavior', 'prop1' => 'valueForProp1']
+     * ];
+     * ```
+     * 
+     * 
+     * @return array:
+     */
+    public function behaviors()
+    {
+        return [];
+    }
+    
+    public function attachBehaviors()
+    {
+        if ($this->_behaviors === false) {
+            return;
+        }
+        
+        $behaviors = $this->behaviors();
+        
+        if (empty($behaviors)) {
+            $this->_behaviors = false;
+            return;
+        }
+        
+        foreach ($this->behaviors() as $class) {
+            $this->_behaviors[] = \ifw::createObject($class, ['context' => $this]);
+        }
+    }
+    
+    // event based methods
+    
     public function on($eventName, $handler)
     {
         $this->_events[$eventName][] = $handler;
@@ -44,8 +103,12 @@ class Component extends \ifw\core\Object
             return $handler($context);
         }
 
+        if (is_array($handler) && isset($handler[0]) && is_object($handler[0]) && isset($handler[1]) && is_string($handler[1])) {
+            return call_user_func_array([$handler[0], $handler[1]], []);
+        }
+        
         if (is_string($handler)) {
-            $object = new $class();
+            $object = \ifw::createObject($handler);
 
             if ($object instanceof \ifw\core\Event) {
                 $object->setContext($context);
