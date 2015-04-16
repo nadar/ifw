@@ -1,5 +1,5 @@
 <?php
-namespace test\controllers;
+namespace app\modules\test\controllers;
 
 use Ifw;
 
@@ -11,7 +11,7 @@ class IndexController extends \ifw\core\Controller
     {
         return [
             'index' => [
-                'class' => 'test\actions\ArAction',
+                'class' => 'app\modules\test\actions\ArAction',
                 // 'class' => 'test\actions\IndexAction',
             ]
         ];

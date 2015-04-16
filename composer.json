@@ -16,8 +16,7 @@
     },
     "autoload": {
         "psr-4": {
-            "ifw\\": "framework/",
-            "test\\" : "modules/test"
+            "ifw\\": "framework/"
         }
     },
     "config": {

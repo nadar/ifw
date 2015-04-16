@@ -1,5 +1,5 @@
 <?php
-namespace test\actions;
+namespace app\modules\test\actions;
 
 use Ifw;
 
@@ -8,8 +8,9 @@ class ArAction extends \ifw\core\Action
     public function run()
     {
         // get one example:
-        $model = \test\models\ActiveXyz::find()->where(['id' => 1])->one();
+        $model = \app\modules\test\models\ActiveXyz::find()->where(['id' => 1])->asArray()->all();
         
+        var_dump($model);
         /*
         $activeModel = new \test\models\ActiveXyz();
         $activeModel->street = 'Street 1';

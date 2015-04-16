@@ -1,5 +1,5 @@
 <?php
-namespace test\models;
+namespace app\modules\test\models;
 
 class ActiveXyz extends \ifw\db\ActiveRecord
 {

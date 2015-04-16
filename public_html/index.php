@@ -18,7 +18,7 @@ try {
         ],
         'modules' => [
             'test' => [
-                'class' => '\\test\\Module',
+                'class' => '\\app\\modules\\test\\Module',
             ],
         ],
     ]);

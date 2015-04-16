@@ -1,5 +1,5 @@
 <?php
-namespace test;
+namespace app\modules\test;
 
 class Module extends \ifw\core\Module
 {
