@@ -15,6 +15,8 @@ class Application extends \ifw\core\Component
     
     public $basePath = null;
     
+    protected $loader = null;
+    
     public function init()
     {
         if (empty($this->basePath)) {
@@ -32,8 +34,12 @@ class Application extends \ifw\core\Component
         $this->setAlias('app', realpath($this->basePath)); // go back
         $this->setAlias('views', '@app/views');
         
+        $this->loader = new Loader();
+        $this->loader->addNamespace("app", $this->getAlias('@app'));
+        $this->loader->register();
+        
         $this->parsePropertys([
-            'di' => new \ifw\core\DiContainer(),
+            'di' => new DiContainer(),
         ]);
 
         $this->parseModules();
