@@ -1,7 +1,7 @@
 <?php
 namespace ifw\core;
 
-abstract class Action extends \ifw\core\Component
+abstract class Action extends \ifw\core\Object
 {
     public $controller;
     
