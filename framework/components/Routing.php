@@ -7,6 +7,11 @@ class Routing extends \ifw\core\Component
     
     public $rules = [];
     
+    /**
+     * 
+     * @param string $route Route where the pattern goes to e.g. module/controller/action
+     * @param string $pattern Your name which should route to $route
+     */
     public function addRule($route, $pattern)
     {
         $this->rules[] = ['route' => $route, 'pattern' => $pattern];
@@ -19,7 +24,7 @@ class Routing extends \ifw\core\Component
         }
         foreach ($this->rules as $key => $item) {
             // @TODO match against regex rules not justing string matching
-            if ($routeMatching == $item['pattern']) {
+            if ($matchingRoute == $item['pattern']) {
                 return $item['route'];
             }
         }
