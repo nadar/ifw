@@ -9,8 +9,6 @@ class Controller extends \ifw\core\Component
 
     public $layout = false;
     
-    public $actions = [];
-    
     protected $response = null;
     
     const EVENT_BEFORE_ACTION = 'EVENT_BEFORE_ACTION';
@@ -22,9 +20,26 @@ class Controller extends \ifw\core\Component
         return \ifw::$app->view;
     }
     
+    /**
+     * 
+     * ```php
+     * return [
+     *     'index' => '\\example\\Action',
+     *     'anotherIndex' => \app\ns\Action::className(),
+     * ]
+     * ```
+     * 
+     * you can also provided class with configurable propertys:
+     * ```php
+     * return [
+     *     'index' => ['class' => '\\example\\action', 'prop1' => 'valueForProp1']
+     * ];
+     * ```
+     * @return array:
+     */
     public function actions()
     {
-        return $this->actions;
+        return [];
     }
     
     public function getViewPath()
