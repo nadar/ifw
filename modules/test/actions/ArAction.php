@@ -10,7 +10,7 @@ class ArAction extends \ifw\core\Action
         // get one example:
         $model = \app\modules\test\models\ActiveXyz::find()->where(['id' => 1])->asArray()->all();
         
-        var_dump($model);
+        return $model;
         /*
         $activeModel = new \test\models\ActiveXyz();
         $activeModel->street = 'Street 1';

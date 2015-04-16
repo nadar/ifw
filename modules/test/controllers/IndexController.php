@@ -7,13 +7,27 @@ class IndexController extends \ifw\core\Controller
 {
     public $layout = 'main.php';
     
-    public function getActions()
+    /*
+    public function init()
+    {
+        parent::init();
+        $this->on(self::EVENT_AFTER_ACTION, function($context) {
+            $context->response = json_encode($context->response); 
+        });
+    }
+    */
+    
+    public function behaviors()
     {
         return [
-            'index' => [
-                'class' => 'app\modules\test\actions\ArAction',
-                // 'class' => 'test\actions\IndexAction',
-            ]
+            \ifw\behaviors\Json::className()
+        ];
+    }
+    
+    public function actions()
+    {
+        return [
+            'index' => \app\modules\test\actions\ArAction::className()
         ];
     }
     

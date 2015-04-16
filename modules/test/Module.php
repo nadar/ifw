@@ -23,6 +23,6 @@ class Module extends \ifw\core\Module
     
     public static function bootstrap($app)
     {
-        $app->routing->addRule('route', 'pattern');
+        $app->routing->addRule('test/index/sub', 'john-doe');
     }
 }
