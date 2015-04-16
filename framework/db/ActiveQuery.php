@@ -9,6 +9,8 @@ class ActiveQuery extends \ifw\core\Component
     
     private $_query = null;
     
+    private $_asArray = false;
+    
     public function init()
     {
         $class = $this->modelClass;
@@ -20,6 +22,13 @@ class ActiveQuery extends \ifw\core\Component
     private function getQuery()
     {
         return $this->_query;
+    }
+    
+    public function asArray()
+    {
+        $this->_asArray = true;
+        
+        return $this;   
     }
     
     public function where(array $where, $whereOperator = 'AND')
@@ -51,6 +60,9 @@ class ActiveQuery extends \ifw\core\Component
     
     private function createModel($row)
     {
+        if ($this->_asArray) {
+            return $row;
+        }
         $obj = \ifw::createObject($this->modelClass);
         $obj->setAsUpdateRecord();
         $obj->attributes = $row;
