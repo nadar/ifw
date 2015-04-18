@@ -67,4 +67,20 @@ class Object
     {
         return method_exists($this, $methodName);
     }
+    
+    public function getMethodArguments($methodName)
+    {
+        $reflection = new \ReflectionMethod($this->className(), $methodName);
+        $params = [];
+        foreach($reflection->getParameters() as $arg) {
+            $params[] = \ifw\helpers\ArrayHelper::toObject([
+                "name" => $arg->getName(),
+                "isArray" => $arg->isArray(),
+                "isOptional" => $arg->isOptional(),
+                "defaultValue" => ($arg->isOptional()) ? $arg->getDefaultValue() : null,
+            ]);
+        }
+        
+        return $params;
+    }
 }
