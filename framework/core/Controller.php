@@ -42,6 +42,26 @@ class Controller extends \ifw\core\Component
         return [];
     }
     
+    /**
+     * The data type which should be used to verify the action arguments. The data type must be
+     * defined for each method, otherwhise the default data type is GET.
+     * 
+     * ```php
+     * return [
+     *     'index' => 'GET',
+     *     'someOtherMethod' => 'POST',
+     *     'someOtherMethod' => \ifw\components\Request::TYPE_GET,
+     *     'someOtherMethod' => ifw::$app->request::TYPE_GET,
+     * ];
+     * ```
+     * 
+     * @return multitype:
+     */
+    public function actionTypes()
+    {
+        return [];
+    }
+    
     public function getViewPath()
     {
         return implode(DIRECTORY_SEPARATOR, ['@views', $this->module->id, $this->id]);
@@ -68,6 +88,7 @@ class Controller extends \ifw\core\Component
     
     public function runAction($action)
     {
+        $request = \ifw::$app->request;
         $this->dispatchEvent(self::EVENT_BEFORE_ACTION);
         $actions = $this->actions();
         
@@ -83,7 +104,27 @@ class Controller extends \ifw\core\Component
             if (!$this->hasMethod($actionName)) {
                 throw new \Exception("The requested action $actionName does not exists.");
             }
-            $this->response = $this->$actionName();
+            $params = [];
+            $actionTypes = $this->actionTypes();
+            $dataType = array_key_exists($action, $actionTypes) ? $actionTypes[$action] : $request::TYPE_GET;
+            $data = $request->getData($dataType);
+            foreach($this->getMethodArguments($actionName) as $arg) {
+                if (array_key_exists($arg->name, $data)) {
+                    $value = $data[$arg->name];
+                    if ($arg->isArray) {
+                        if (!is_array($value)) {
+                            throw new Exception("The paremeter '{$arg->name}' for action '$actionName' must be an array!");
+                        }   
+                    }
+                } else {
+                    if (!$arg->isOptional) {
+                        throw new Exception("The action '$actionName' requires the $dataType parameter '{$arg->name}'.");
+                    }
+                    $value = $arg->defaultValue;
+                }
+                $params[] = $value;
+            }
+            $this->response = call_user_func_array([$this, $actionName], $params);
         }
         $this->dispatchEvent(self::EVENT_AFTER_ACTION);
         return $this->response;
