@@ -5,7 +5,7 @@ class Component extends \ifw\core\Object
 {
     private $_events = [];
     
-    private $_behaviors = null;
+    private $_behaviors = [];
 
     public function init()
     {
@@ -16,7 +16,18 @@ class Component extends \ifw\core\Object
     public function __clone()
     {
         $this->_events = [];
-        $this->_behaviors = null;
+        $this->_behaviors = [];
+    }
+    
+    public function __call($name, $arguments)
+    {
+        foreach ($this->_behaviors as $behavior) {
+            if ($behavior->hasMethod($name)) {
+                return call_user_func_array([$behavior, $name], $arguments);
+            }
+        }
+        
+        throw new \Exception("the requested method $name does not exists in this class or attached behavior.");
     }
     
     // behavior based methods
@@ -46,17 +57,6 @@ class Component extends \ifw\core\Object
     
     public function attachBehaviors()
     {
-        if ($this->_behaviors === false) {
-            return;
-        }
-        
-        $behaviors = $this->behaviors();
-        
-        if (empty($behaviors)) {
-            $this->_behaviors = false;
-            return;
-        }
-        
         foreach ($this->behaviors() as $class) {
             $this->_behaviors[] = \ifw::createObject($class, ['context' => $this]);
         }

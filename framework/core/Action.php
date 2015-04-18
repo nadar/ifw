@@ -7,5 +7,10 @@ abstract class Action extends \ifw\core\Object
     
     public $id;
     
+    public function __call($name, $arguments)
+    {
+        return $this->controller->__call($name, $arguments);
+    }
+    
     abstract public function run();
 }
