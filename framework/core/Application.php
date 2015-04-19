@@ -38,9 +38,7 @@ class Application extends \ifw\core\Component
         $this->loader->addNamespace("app", $this->getAlias('@app'));
         $this->loader->register();
         
-        $this->parsePropertys([
-            'di' => new DiContainer(),
-        ]);
+        $this->di = new DiContainer();
 
         $this->parseModules();
         $this->parseComponents();
