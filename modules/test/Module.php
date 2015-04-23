@@ -14,15 +14,11 @@ class Module extends \ifw\core\Module
     }
     */
 
-    public function getRules()
-    {
-        return [
-            ['rule' => 'test/index/sub', 'pattern' => 'foobar']
-        ];
-    }
-    
     public static function bootstrap($app)
     {
-        $app->routing->addRule('test/index/sub', 'john-doe');
+        $app->routing->addrule('test/index/<action>', 'das-modul/<action:\w+>');
+        $app->routing->addRule('test/index/sub', 'hey/<j>');
+        $app->routing->addRule('test/index/sub', 'shorturl/<id:\d+>');
+        $app->routing->addRule('test/index/foo', 'foo/<id:\d+>/bla');
     }
 }
