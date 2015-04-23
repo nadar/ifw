@@ -31,6 +31,13 @@ class IndexController extends \ifw\core\Controller
         ];
     }
     
+    public function actionTypes()
+    {
+        return [
+            'sub' => 'POST'  
+        ];
+    }
+    
     /*
     public function actionIndex()
     {
@@ -41,8 +48,10 @@ class IndexController extends \ifw\core\Controller
         return $this->render('test.php', ['id' => $this->id]);
     }
     */
-    public function actionSub()
+    public function actionSub($foo, $bar = false)
     {
+        var_dump($foo, $bar);
+        exit;
         return $this->render('sub.php', ['id' => $this->id]);
     }
 }
