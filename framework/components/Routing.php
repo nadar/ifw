@@ -1,6 +1,8 @@
 <?php
 namespace ifw\components;
 
+use Ifw;
+
 class Routing extends \ifw\core\Component
 {
     public $rewriteEnabled = false;
@@ -81,6 +83,9 @@ class Routing extends \ifw\core\Component
                 preg_match_all("/<(.*?)>/", $item['route'], $routeMatch, PREG_SET_ORDER);
                 foreach ($routeMatch as $match) {
                     $item['route'] = str_replace($match[0], $params[$match[1]], $item['route']);
+                }
+                foreach ($params as $key => $value) {
+                    Ifw::$app->request->setGet($key, $value);
                 }
                 return $item['route'];
             }
