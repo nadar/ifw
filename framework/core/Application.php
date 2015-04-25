@@ -43,6 +43,7 @@ class Application extends \ifw\core\Component
         $this->parseModules();
         $this->parseComponents();
         
+        $this->addComponent('session', '\\ifw\\components\\Session');
         $this->addComponent('request', '\\ifw\\components\\Request');
         $this->addComponent('routing', '\\ifw\\components\\Routing');
         $this->addComponent('view', '\\ifw\\components\\View');
