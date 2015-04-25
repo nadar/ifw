@@ -31,7 +31,7 @@ namespace ifw;
  * $config->get(); // returns the array
  * ```
  */
-class Config
+class Config implements \ArrayAccess
 {
     public $config = [
         'basePath' => null,
@@ -46,6 +46,27 @@ class Config
             'basePath' => $basePath,
             'defaultModule' => $defaultModule  
         ];
+    }
+    
+    public function offsetSet($offset, $value)
+    {
+        if (empty($offset)) {
+            throw new \Exception("the offset key can not be empty.");
+        }
+        
+        $this->config[$offset] = $value;
+    }
+    
+    public function offsetExists($offset) {
+        return isset($this->config[$offset]);
+    }
+    
+    public function offsetUnset($offset) {
+        unset($this->config[$offset]);
+    }
+    
+    public function offsetGet($offset) {
+        return isset($this->config[$offset]) ? $this->config[$offset] : null;
     }
     
     public function module($name, $className, array $args = [])
