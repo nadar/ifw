@@ -7,38 +7,126 @@ class Request extends \ifw\core\Component
     
     const TYPE_POST = 'POST';
     
-    private $_dataTypes = [self::TYPE_GET, self::TYPE_POST];
+    const TYPE_FILES = 'FILES';
     
-    private $_get = null;
+    const TYPE_SERVER = 'SERVER';
     
-    private $_post = null;
+    private $_dataTypes = [self::TYPE_GET, self::TYPE_POST, self::TYPE_FILES, self::TYPE_SERVER];
+    
+    private $_get = [];
+    
+    private $_post = [];
+    
+    private $_files = [];
+    
+    private $_server = [];
+    
+    public function init()
+    {
+        $this->_get = $_GET;
+        $this->_post = $_POST;
+        $this->_files = $_FILES;
+        $this->_server = $_SERVER;
+    }
     
     private function ensureType($dataType)
     {
-        $dataType = strtoupper($dataType);
-        if (!in_array($dataType, $this->_dataTypes)) {
+        if (!in_array(strtoupper($dataType), $this->_dataTypes)) {
             throw new \ifw\core\Exception("The dataType $dataType does not exists.");
         }
         
         return $dataType;
     }
     
-    public function get($varName, $defaultValue = null)
+    private function exception($key)
     {
-        $data = $this->getData(self::TYPE_GET);
-        if (!array_key_exists($varName, $data)) {
-            return $defaultValue;
-        }
-        return $data[$varName];
+        return "You can not override an existing variable \"$key\" by customer variable setter.";
     }
     
-    public function post($varName, $defaultValue = null)
+    // get
+    
+    public function get($key = null, $defaultValue = null)
     {
-        $data = $this->getData(self::TYPE_POST);
-        if (!array_key_exists($varName, $data)) {
-            return $defaultValue;
+        if ($key === null) {
+            return $this->_get;
         }
-        return $data[$varName];
+        return ($this->hasGet($key)) ? $this->_get[$key] : $defaultValue;
+    }
+    
+    public function setGet($key, $value)
+    {
+        if ($this->hasGet($key)) {
+            throw new \ifw\core\Exception($this->exception($key));
+        }
+        
+        $this->_get[$key] = $value;
+    }
+    
+    public function hasGet($key)
+    {
+        return array_key_exists($key, $this->_get);
+    }
+    
+    // post
+    
+    public function post($key = null, $defaultValue = null)
+    {
+        if ($key === null) {
+            return $this->_post;
+        }
+        return (array_key_exists($key, $this->_post)) ? $this->_post[$key] : $defaultValue;
+    }
+    
+    public function setPost($key, $value)
+    {
+        if ($this->hasPost($key)) {
+            throw new \ifw\core\Exception($this->exception($key));
+        }
+        
+        $this->_post[$key] = $value;
+    }
+    
+    public function hasPost($key)
+    {
+        return array_key_exists($key, $this->_post);
+    }
+    
+    // files
+    
+    public function files($key = null)
+    {
+        if ($key === null) {
+            return $this->_files;
+        }
+        return (array_key_exists($key, $this->_files)) ? $this->_files[$key] : false;
+    }
+    
+    // server
+    
+    public function server($key = null)
+    {
+        if ($key === null) {
+            return $this->_server;
+        }
+        return (array_key_exists($key, $this->_server)) ? $this->_server[$key] : false;
+    }
+    
+    // global methods
+    
+    public function setData($dataType, $key, $value)
+    {
+        $dataType = $this->ensureType($dataType);
+        switch($dataType) {
+            case self::TYPE_GET:
+                return $this->setGet($key, $value);
+                break;
+            case self::TYPE_POST:
+                return $this->setPost($key, $value);
+                break;
+            default:
+                throw new \ifw\core\Exception("the dataType $dataType does not exists!");
+                break;
+        }
     }
     
     public function getData($dataType)
@@ -46,10 +134,16 @@ class Request extends \ifw\core\Component
         $dataType = $this->ensureType($dataType);
         switch($dataType) {
             case self::TYPE_GET:
-                return (is_null($this->_get)) ? $this->_get = $_GET : $this->_get;
+                return $this->_get;
                 break;
             case self::TYPE_POST:
-                return (is_null($this->_post)) ? $this->_post = $_POST : $this->_post;
+                return $this->_post;
+                break;
+            case self::TYPE_FILES:
+                return $this->_files;
+                break;
+            case self::TYPE_SERVER:
+                return $this->_server;
                 break;
             default:
                 throw new \ifw\core\Exception("the dataType $dataType does not exists!");
