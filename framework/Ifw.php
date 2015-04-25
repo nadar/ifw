@@ -1,9 +1,36 @@
 <?php
+
 class Ifw
 {
     public static $app = null;
 
-    public static function init(array $config = [])
+    /**
+     * ifw init method
+     * 
+     * example config
+     * ```
+     * ifw::init([
+     *   'basePath' => dirname(__DIR__),
+     *   'defaultModule' => 'foobar',
+     *   'components' => [
+     *       'db' => [
+     *           'dsn' => 'mysql:host=localhost;dbname=DATABASE',
+     *           'user' => 'USERNAME',
+     *           'password' => 'PASSWORD',
+     *       ]
+     *   ],
+     *   'modules' => [
+     *       'foobar' => [
+     *           'class' => '\\app\\modules\\foobar\\Module',
+     *       ],
+     *   ],
+     * ]);
+     * ```
+     * 
+     * @param array $config
+     * @return object
+     */
+    public static function init(array $config)
     {
         return static::$app = static::createObject('\ifw\core\Application', $config);
     }
