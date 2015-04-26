@@ -1,7 +1,9 @@
 <?php
 namespace ifw\core;
 
-class Controller extends \ifw\core\Component
+use Ifw;
+
+abstract class Controller extends \ifw\core\Component
 {
     public $id = null;
     
@@ -17,7 +19,7 @@ class Controller extends \ifw\core\Component
     
     public function getView()
     {
-        return \ifw::$app->view;
+        return Ifw::$app->view;
     }
     
     /**
@@ -55,7 +57,7 @@ class Controller extends \ifw\core\Component
      * ];
      * ```
      * 
-     * @return multitype:
+     * @return array:
      */
     public function actionTypes()
     {
@@ -75,7 +77,7 @@ class Controller extends \ifw\core\Component
     public function render($viewFile, array $params = [])
     {
         if (!$this->layout) {
-            return $this->getView()->render($viewFile, $params, $this);
+            return $this->renderPartial($viewFile, $params);
         }
         
         return $this->getView()->renderLayout($this->layout, $viewFile, $params, $this);
