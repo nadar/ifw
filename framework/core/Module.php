@@ -11,9 +11,9 @@ class Module extends \ifw\core\Component
 
     protected $response = null;
     
-    public function runController($controllerName)
+    public function runController($controllerName, $controllerNamespace)
     {
-        $className = $this->getClassNamespace().'\\controllers\\'.$controllerName.'Controller';
+        $className = $this->getClassNamespace().'\\'.$controllerNamespace.'\\'.$controllerName.'Controller';
         $this->dispatchEvent(self::EVENT_BEFORE_CONTROLLER);
         $this->response = \ifw::createObject($className, ['module' => $this, 'id' => $controllerName]);
         $this->dispatchEvent(self::EVENT_AFTER_CONTROLLER);

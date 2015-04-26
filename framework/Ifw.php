@@ -32,7 +32,15 @@ class Ifw
      */
     public static function init(array $config)
     {
-        return static::$app = static::createObject('\ifw\core\Application', $config);
+        switch(strtolower(php_sapi_name())) {
+            case "cli":
+                $className = '\\ifw\\cli\\Application';
+                break;
+            default:
+                $className = '\\ifw\\web\\Application';
+                break;
+        }
+        return static::$app = static::createObject($className, $config);
     }
     
     /**

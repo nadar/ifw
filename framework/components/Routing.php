@@ -10,6 +10,22 @@ class Routing extends \ifw\core\Component
     public $rules = [];
     
     /**
+     * @todo wrong integration when using cli application!
+     * @param unknown $request
+     * @return unknown
+     */
+    public function getRoute($request)
+    {
+        if ($this->rewriteEnabled) {
+            $route = $request->getRequestPathSuffix();
+        } else {
+            $route = $request->get('route', false);
+        }
+    
+        return $route;
+    }
+    
+    /**
      * The below example shows how use the pattern and route arguments. All examples are made with the news 
      * module example. ***news*** represent the module, ***article*** the controller and ***detail*** the action sindie the article
      * controller.
@@ -96,17 +112,6 @@ class Routing extends \ifw\core\Component
         }
         
         return $requestRoute;
-    }
-    
-    public function getRoute($request)
-    {
-        if ($this->rewriteEnabled) {
-            $route = $request->getRequestPathSuffix();
-        } else {
-            $route = $request->get('route', false);
-        }
-        
-        return $route;
     }
     
     public function getRouting($app, $request)

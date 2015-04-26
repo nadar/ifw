@@ -1,7 +1,7 @@
 <?php
 namespace ifw\core;
 
-class Application extends \ifw\core\Component
+abstract class Application extends \ifw\core\Component
 {
     public $components = [];
 
@@ -15,7 +15,13 @@ class Application extends \ifw\core\Component
     
     public $basePath = null;
     
+    public $controllerNamespace = null;
+    
     protected $loader = null;
+    
+    abstract public function run();
+    
+    abstract public function componentList();
     
     public function init()
     {
@@ -43,11 +49,9 @@ class Application extends \ifw\core\Component
         $this->parseModules();
         $this->parseComponents();
         
-        $this->addComponent('session', '\\ifw\\components\\Session');
-        $this->addComponent('request', '\\ifw\\components\\Request');
-        $this->addComponent('routing', '\\ifw\\components\\Routing');
-        $this->addComponent('view', '\\ifw\\components\\View');
-        $this->addComponent('db', '\\ifw\\components\\Db');
+        foreach($this->componentList() as $name => $class) {
+            $this->addComponent($name, $class);
+        }
         
         $this->bootstrap();
     }
@@ -113,17 +117,6 @@ class Application extends \ifw\core\Component
     public function getComponent($id)
     {
         return ($this->hasComponent($id)) ? $this->di->get('components.'.$id) : false;
-    }
-
-    public function runRoute($module, $controller, $action)
-    {
-        return $this->getModule($module)->runController($controller)->runAction($action);
-    }
-    
-    public function run()
-    {
-        $route = $this->routing->getRouting($this, $this->request);
-        return $this->runRoute($route[0], $route[1], $route[2]);
     }
     
     public function setAlias($alias, $path)
