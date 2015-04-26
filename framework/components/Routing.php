@@ -66,6 +66,10 @@ class Routing extends \ifw\core\Component
                     preg_match('/<(\w+):?([^>]+)?>/', $item['pattern'], $matches);
                     if (isset($matches[2])) {
                         $regex[] = $matches[2];
+                        if (!array_key_exists($key, $requestRouteParts)) {
+                            $error = true;
+                            continue;
+                        }
                         $params[$matches[1]] = $requestRouteParts[$key];
                     } else {
                         $error = true;
@@ -109,12 +113,12 @@ class Routing extends \ifw\core\Component
     {
         $route = $this->getRoute($request);
         $route = $this->parseRules($route);
+        $parts = explode("/", $route);
         
-        if (!$route) {
+        if (!$route || count($parts) !== 3) {
             return [$app->defaultModule, 'index', 'index'];
         }
         
-        $parts = explode("/", $route);
         return $parts;
     }
 }
