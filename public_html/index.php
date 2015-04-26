@@ -6,22 +6,12 @@ require_once '../vendor/autoload.php';
 require_once '../framework/ifw.php';
 
 try {
-    ifw::init([
-        'basePath' => dirname(__DIR__),
-        'defaultModule' => 'test',
-        'components' => [
-            'db' => [
-                'dsn' => 'mysql:host=localhost;dbname=ifw',
-                'user' => 'root',
-                'password' => 'root',
-            ]
-        ],
-        'modules' => [
-            'test' => [
-                'class' => '\\app\\modules\\test\\Module',
-            ],
-        ],
-    ]);
+    
+    $config = new \ifw\Config(dirname(__DIR__), 'test');
+    $config->module('test', '\\app\\modules\\test\\Module');
+    $config->component('db', ['dsn' => 'mysql:host=localhost;dbname=ifw', 'user' => 'root', 'password' => 'root']);
+    
+    ifw::init($config->get());
 
     echo ifw::$app->run();
 } catch (Exception $e) {
