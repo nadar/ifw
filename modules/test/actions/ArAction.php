@@ -7,6 +7,10 @@ class ArAction extends \ifw\core\Action
 {
     public function run()
     {
+        /*
+        Ifw::$app->session->foo = false;
+        Ifw::$app->session->bar = true;
+        */
         // get one example:
         $model = \app\modules\test\models\ActiveXyz::find()->where(['id' => 1])->asArray()->all();
         
