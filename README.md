@@ -20,6 +20,7 @@ Todo
 
 - Create URLs based on Routing
 - AR delete
+- AR events (atache beahvior to test addError() method)
 - Asset Management
 - Database Migrations
 - Terminal Commands
