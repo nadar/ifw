@@ -16,9 +16,12 @@ class Module extends \ifw\core\Module
 
     public static function bootstrap($app)
     {
-        $app->routing->addrule('test/index/<action>', 'das-modul/<action:\w+>');
-        $app->routing->addRule('test/index/sub', 'hey/<j>');
-        $app->routing->addRule('test/index/sub', 'shorturl/<id:\d+>');
-        $app->routing->addRule('test/index/foo', 'foo/<id:\d+>/bla');
+        if (!$app->request->isCli()) {
+            $app->addComponent('storage', '\\app\\modules\\test\\components\\Storage');
+            $app->routing->addrule('test/index/<action>', 'das-modul/<action:\w+>');
+            $app->routing->addRule('test/index/sub', 'hey/<j>');
+            $app->routing->addRule('test/index/sub', 'shorturl/<id:\d+>');
+            $app->routing->addRule('test/index/foo', 'foo/<id:\d+>/bla');
+        }
     }
 }
