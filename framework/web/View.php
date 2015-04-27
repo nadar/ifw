@@ -1,5 +1,5 @@
 <?php
-namespace ifw\components;
+namespace ifw\web;
 
 class View extends \ifw\core\Component
 {

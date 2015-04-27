@@ -6,28 +6,24 @@ class Application extends \ifw\core\Application
 {
     public $controllerNamespace = 'clis';
     
-    public function init()
-    {
-        var_dump('asdf');
-        exit;
-    }
-    /*
-    public function init()
-    {
-        parent::init();
-        
-        $this->addComponent('session', '\\ifw\\components\\Session');
-        $this->addComponent('view', '\\ifw\\components\\View');
-    }
-    
     public function componentList()
     {
         return [
             'db' => '\\ifw\\components\\Db',
-            'routing' => '\\ifw\\cli\\Routing',
-            'request' => '\\ifw\\components\\Request'
+            'request' => '\\ifw\\cli\\Request'
         ];
     }
     
-    */
+    public function run()
+    {
+        $route = $this->request->getParam(1);
+        
+        $routes = explode("/", $route);
+        
+        if (count($routes) !== 3) {
+            throw new \Exception("the first cli parameter must be a route trailed by slashes. e.g module/clicontroller/action");
+        }
+        
+        return $this->runRoute($routes[0], $routes[1], $routes[2]);
+    }
 }

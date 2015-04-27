@@ -1,6 +1,6 @@
 <?php
 
-namespace ifw\components;
+namespace ifw\web;
 
 /**
  * Handling PHP SESSIONS via ifw::$app->session component.

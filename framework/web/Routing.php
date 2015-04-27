@@ -1,5 +1,5 @@
 <?php
-namespace ifw\components;
+namespace ifw\web;
 
 use Ifw;
 

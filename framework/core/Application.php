@@ -55,7 +55,15 @@ abstract class Application extends \ifw\core\Component
         
         $this->bootstrap();
     }
-
+    
+    public function bootstrap()
+    {
+        foreach ($this->modules as $config) {
+            $className = $config['class'];
+            $className::bootstrap($this);
+        }
+    }
+    
     public function __get($key)
     {
         if ($this->hasComponent($key)) {
@@ -74,13 +82,10 @@ abstract class Application extends \ifw\core\Component
             $this->di->append('modules.'.$id, $config['class'], array_merge($config, ['id' => $id]));
         }
     }
-
-    public function bootstrap()
+    
+    public function runRoute($module, $controller, $action)
     {
-        foreach ($this->modules as $config) {
-            $className = $config['class'];
-            $className::bootstrap($this);
-        }
+        return $this->getModule($module)->runController($controller, $this->controllerNamespace)->runAction($action);
     }
     
     public function getModule($id)
