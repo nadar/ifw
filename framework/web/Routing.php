@@ -61,6 +61,48 @@ class Routing extends \ifw\core\Component
         $this->rules[] = ['route' => $route, 'pattern' => $pattern];
     }
     
+    /**
+     * @todo test $param value against rule/match regex.
+     * @param string $route
+     * @param array $params
+     * @return string
+     */
+    public function createUrl($route, array $params = [])
+    {
+        foreach ($this->rules as $rule) {
+            if ($rule['route'] == $route) {
+                preg_match_all('/<(\w+):?([^>]+)?>/', $rule['pattern'], $matches, PREG_SET_ORDER);
+                $url = $rule['pattern'];
+                $i=0;
+                foreach($matches as $match) {
+                    if (count($match) !== 3) {
+                        continue;
+                    }
+                    if (array_key_exists($match[1], $params)) {
+                        $i++;
+                        $url = str_replace($match[0], $params[$match[1]], $url);
+                        unset($params[$match[1]]);
+                    }
+                }
+                if (count($matches) == $i) {
+                    return $this->buildUrl($url, $params);
+                }
+            }
+        }
+        
+        return $this->buildUrl($route, $params);
+    }
+    
+    private function buildUrl($url, array $params)
+    {
+        return (count($params) > 0) ? $url . '?' . http_build_query($params) : $url;
+    }
+    
+    /**
+     * @todo rename parseRequest
+     * @param unknown $requestRoute
+     * @return unknown|mixed
+     */
     public function parseRules($requestRoute)
     {
         if (!$requestRoute) {
