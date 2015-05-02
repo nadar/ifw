@@ -7,14 +7,18 @@ class ArAction extends \ifw\core\Action
 {
     public function run()
     {
+        $url = \ifw\helpers\UrlHelper::to('test/index/sub', ['id' => 123, 'foo' => 'bar']);
+        return [];
+        //var_dump($url);
+        //exit;
         /*
         Ifw::$app->session->foo = false;
         Ifw::$app->session->bar = true;
         */
         // get one example:
-        $model = \app\modules\test\models\ActiveXyz::find()->where(['id' => 1])->asArray()->all();
+        //$model = \app\modules\test\models\ActiveXyz::find()->where(['id' => 1])->asArray()->all();
         
-        return $model;
+        //return $model;
         /*
         $activeModel = new \test\models\ActiveXyz();
         $activeModel->street = 'Street 1';
