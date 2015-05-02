@@ -90,7 +90,9 @@ abstract class Application extends \ifw\core\Component
     
     public function runRoute($module, $controller, $action)
     {
-        return $this->getModule($module)->runController($controller, $this->controllerNamespace)->runAction($action);
+        $response = $this->getModule($module)->runController($controller, $this->controllerNamespace)->runAction($action);
+        $this->response->getHeader();
+        return $response;
     }
     
     public function getModule($id)
