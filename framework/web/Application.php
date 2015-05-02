@@ -12,6 +12,7 @@ class Application extends \ifw\core\Application
             'db' => '\\ifw\\components\\Db',
             'routing' => '\\ifw\\web\\Routing',
             'request' => '\\ifw\\web\\Request',
+            'response' => '\\ifw\\web\\Response',
             'session' => '\\ifw\\web\\Session',
             'view' => '\\ifw\\web\\View',
         ];
