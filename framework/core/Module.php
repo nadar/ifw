@@ -13,6 +13,7 @@ class Module extends \ifw\core\Component
     
     public function runController($controllerName, $controllerNamespace)
     {
+        \ifw::trace("run controller $controllerName in namespace $controllerNamespace");
         $className = $this->getClassNamespace().'\\'.$controllerNamespace.'\\'.$controllerName.'Controller';
         $this->dispatchEvent(self::EVENT_BEFORE_CONTROLLER);
         $this->response = \ifw::createObject($className, ['module' => $this, 'id' => $controllerName]);

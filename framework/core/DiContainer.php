@@ -1,6 +1,8 @@
 <?php
 namespace ifw\core;
 
+use Ifw;
+
 class DiContainer
 {
     public static $containers = [];
@@ -45,6 +47,8 @@ class DiContainer
         }
 
         if (is_null(static::$containers[$id]['object'])) {
+            Ifw::trace("di create class object '" . static::$containers[$id]['className'] ."'");
+            
             static::$containers[$id]['object'] = new static::$containers[$id]['className'](static::$containers[$id]['params']);
         }
 

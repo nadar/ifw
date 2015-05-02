@@ -4,6 +4,8 @@ class Ifw
 {
     public static $app = null;
 
+    private static $_trace = [];
+    
     /**
      * ifw init method
      * 
@@ -41,6 +43,23 @@ class Ifw
                 break;
         }
         return static::$app = static::createObject($className, $config);
+    }
+    
+    public static function trace($message)
+    {
+        $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
+        $item = array_shift($trace);
+        static::$_trace[] = [
+            'message' => $message,
+            'file' => $item['file'],
+            'line' => $item['line'],
+            'time' => microtime(true),
+        ];
+    }
+    
+    public static function getTrace()
+    {
+        return array_reverse(static::$_trace);
     }
     
     /**

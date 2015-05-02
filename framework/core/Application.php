@@ -1,6 +1,8 @@
 <?php
 namespace ifw\core;
 
+use Ifw;
+
 abstract class Application extends \ifw\core\Component
 {
     public $components = [];
@@ -25,6 +27,8 @@ abstract class Application extends \ifw\core\Component
     
     public function init()
     {
+        Ifw::trace('application init');
+        
         if (empty($this->basePath)) {
             throw new \Exception("The base path directory must be set");
         }
@@ -60,6 +64,7 @@ abstract class Application extends \ifw\core\Component
     {
         foreach ($this->modules as $config) {
             $className = $config['class'];
+            Ifw::trace("run bootstrap() method of module '$className'");
             $className::bootstrap($this);
         }
     }
