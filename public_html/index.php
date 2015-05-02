@@ -14,6 +14,9 @@ try {
     ifw::init($config->get());
 
     echo ifw::$app->run();
+    
+    //print_r(ifw::getTrace());
+    
 } catch (Exception $e) {
     echo "<pre>";
     print_r($e);
