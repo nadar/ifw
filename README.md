@@ -8,22 +8,22 @@ Features
 Those features are already integrated:
 
 - ActiveRecord (basic integration)
-- Url Routing (url rules)
+- Url Routing (parse rules, url creation)
 - Behaviors
 - Session Component
 - Request Component
+- Response Component
 - Database Component
 - Action Classes
+- Terminal Commands (clis)
 
 Todo
 ----
 
-- Create URLs based on Routing
 - AR delete
-- AR events (atache beahvior to test addError() method)
+- AR events (atache behavior to test addError() method)
 - Asset Management
 - Database Migrations
-- Terminal Commands
 - Basic Rest implementation
 - User Auth implementation ($app->user)
 
@@ -62,7 +62,6 @@ composer install --prefer-dist
 create index.php file inside the public_html folder with following example content:
 ```php
 require_once '../vendor/autoload.php';
-require_once '../framework/ifw.php';
 
 $config = new \ifw\Config(dirname(__DIR__), 'test');
 $config->module('test', '\\app\\modules\\test\\Module');
