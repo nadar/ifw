@@ -40,9 +40,14 @@ abstract class Application extends \ifw\core\Component
         if (empty($this->modules)) {
             throw new \Exception("At least one modules need to be set.");
         }
-        
-        $this->setAlias('app', realpath($this->basePath)); // go back
+        $this->setAlias('app', realpath($this->basePath));
+        $this->setAlias('public_html', '@app/public_html');
+        $this->setAlias('cache', '@public_html/cache');
         $this->setAlias('views', '@app/views');
+        
+        if (!file_exists($this->getAlias('@cache'))) {
+            throw new Exception("The cache folder '".$this->getAlias('@cache')."' does not exists.");
+        }
         
         $this->loader = new Loader();
         $this->loader->addNamespace("app", $this->getAlias('@app'));
