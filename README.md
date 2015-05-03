@@ -26,6 +26,8 @@ Todo
 - Database Migrations
 - Basic Rest implementation
 - User Auth implementation ($app->user)
+- Admin Controllers (how to access?)
+- Rest Controllers (how to access?)
 
 INSTALLATION
 ============
