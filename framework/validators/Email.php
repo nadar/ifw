@@ -1,4 +1,5 @@
 <?php
+
 namespace ifw\validators;
 
 class Email extends \ifw\validators\AbstractValidator

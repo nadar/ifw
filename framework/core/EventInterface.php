@@ -1,4 +1,5 @@
 <?php
+
 namespace ifw\core;
 
 interface EventInterface

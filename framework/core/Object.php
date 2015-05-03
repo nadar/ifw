@@ -1,4 +1,5 @@
 <?php
+
 namespace ifw\core;
 
 class Object
@@ -17,7 +18,7 @@ class Object
     public function __set($key, $value)
     {
         if (!$this->hasProperty($key)) {
-            throw new \Exception("The property '$key' does not exists inside of the class '" . $this->getClass() . "'");
+            throw new \Exception("The property '$key' does not exists inside of the class '".$this->getClass()."'");
         }
 
         $this->$key = $value;
@@ -26,8 +27,9 @@ class Object
     public function __get($key)
     {
         if (!$this->hasProperty($key)) {
-            throw new \Exception("The requested property '$key' does not exists in the class '" . $this->getClass() . '"');
+            throw new \Exception("The requested property '$key' does not exists in the class '".$this->getClass().'"');
         }
+
         return $this->$key;
     }
 
@@ -35,17 +37,17 @@ class Object
     {
         return get_class($this);
     }
-    
+
     public static function className()
     {
         return get_called_class();
     }
-    
+
     public function getClassNamespace()
     {
-        return implode("\\", array_slice(explode('\\', $this->getClass()), 0, -1));
+        return implode('\\', array_slice(explode('\\', $this->getClass()), 0, -1));
     }
-    
+
     public function getPropertys()
     {
         return get_class_vars($this->getClass());
@@ -67,20 +69,20 @@ class Object
     {
         return method_exists($this, $methodName);
     }
-    
+
     public function getMethodArguments($methodName)
     {
         $reflection = new \ReflectionMethod($this->className(), $methodName);
         $params = [];
-        foreach($reflection->getParameters() as $arg) {
+        foreach ($reflection->getParameters() as $arg) {
             $params[] = \ifw\helpers\ArrayHelper::toObject([
-                "name" => $arg->getName(),
-                "isArray" => $arg->isArray(),
-                "isOptional" => $arg->isOptional(),
-                "defaultValue" => ($arg->isOptional()) ? $arg->getDefaultValue() : null,
+                'name' => $arg->getName(),
+                'isArray' => $arg->isArray(),
+                'isOptional' => $arg->isOptional(),
+                'defaultValue' => ($arg->isOptional()) ? $arg->getDefaultValue() : null,
             ]);
         }
-        
+
         return $params;
     }
 }

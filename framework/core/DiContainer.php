@@ -1,4 +1,5 @@
 <?php
+
 namespace ifw\core;
 
 use Ifw;
@@ -15,7 +16,7 @@ class DiContainer
     /**
      * We have no add() and append() method, we only use an append() method, cause its common
      * to merge di container params before instanciate with get($id).
-     * 
+     *
      * Always remove the class parameter from the params array if there is any.
      */
     public function append($id, $className = null, array $params = [])
@@ -23,7 +24,7 @@ class DiContainer
         if (isset($params['class'])) {
             unset($params['class']);
         }
-        
+
         if ($this->has($id)) {
             static::$containers[$id] = [
                 'className' => $className,
@@ -47,8 +48,8 @@ class DiContainer
         }
 
         if (is_null(static::$containers[$id]['object'])) {
-            Ifw::trace("di create class object '" . static::$containers[$id]['className'] ."'");
-            
+            Ifw::trace("di create class object '".static::$containers[$id]['className']."'");
+
             static::$containers[$id]['object'] = new static::$containers[$id]['className'](static::$containers[$id]['params']);
         }
 

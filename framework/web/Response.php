@@ -5,24 +5,24 @@ namespace ifw\web;
 class Response extends \ifw\core\Component
 {
     public $statusCode = 200;
-    
+
     private $_contentType = 'text/html';
-    
+
     public function setStatusCode($code)
     {
         $this->statusCode = $code;
     }
-    
+
     public function setContentType($type)
     {
-        switch($type) {
-            case "text":
+        switch ($type) {
+            case 'text':
                 $this->_contentType = 'text/html';
                 break;
-            case "json":
+            case 'json':
                 $this->_contentType = 'application/json';
                 break;
-            case "xml":
+            case 'xml':
                 $this->_contentType = 'text/xml';
                 break;
             default:
@@ -30,10 +30,10 @@ class Response extends \ifw\core\Component
                 break;
         }
     }
-    
+
     public function getHeader()
     {
         http_response_code($this->statusCode);
-        header('Content-Type: ' . $this->_contentType);
+        header('Content-Type: '.$this->_contentType);
     }
 }

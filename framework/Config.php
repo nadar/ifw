@@ -3,7 +3,6 @@
 namespace ifw;
 
 /**
- * 
  * The below example config
  * ```
  * [
@@ -29,7 +28,7 @@ namespace ifw;
  * $config->module('test', '\\app\\modules\\test\\Module');
  * $config->component('db', ['dsn' => 'mysql:host=localhost;dbname=DATABASE', 'user' => 'USER', 'password' => 'PASSWORD']);
  * $config->get(); // returns the array
- * ```
+ * ```.
  */
 class Config implements \ArrayAccess
 {
@@ -39,62 +38,65 @@ class Config implements \ArrayAccess
         'modules' => [],
         'components' => [],
     ];
-    
+
     public function __construct($basePath, $defaultModule)
     {
         $this->config = [
             'basePath' => $basePath,
-            'defaultModule' => $defaultModule  
+            'defaultModule' => $defaultModule,
         ];
     }
-    
+
     public function offsetSet($offset, $value)
     {
         if (empty($offset)) {
-            throw new \Exception("the offset key can not be empty.");
+            throw new \Exception('the offset key can not be empty.');
         }
-        
+
         $this->config[$offset] = $value;
     }
-    
-    public function offsetExists($offset) {
+
+    public function offsetExists($offset)
+    {
         return isset($this->config[$offset]);
     }
-    
-    public function offsetUnset($offset) {
+
+    public function offsetUnset($offset)
+    {
         unset($this->config[$offset]);
     }
-    
-    public function offsetGet($offset) {
+
+    public function offsetGet($offset)
+    {
         return isset($this->config[$offset]) ? $this->config[$offset] : null;
     }
-    
+
     public function module($name, $className, array $args = [])
     {
         if ($this->has("modules.$name")) {
-            throw new \Exception("the module does already exist.");
+            throw new \Exception('the module does already exist.');
         }
         $objectConfig = $args;
         $objectConfig['class'] = $className;
         $this->config['modules'][$name] = $objectConfig;
     }
-    
+
     public function component($name, array $args = [], $className = null)
     {
         if ($this->has("components.$name")) {
-            throw new \Exception("the component does already exist.");
+            throw new \Exception('the component does already exist.');
         }
-        
+
         $objectConfig = $args;
         if ($className !== null) {
             $objectConfig['class'] = $className;
         }
         $this->config['components'][$name] = $objectConfig;
     }
-    
+
     public function has($key)
     {
-        $keys = explode(".", $key);
+        $keys = explode('.', $key);
         $array = $this->config;
         $i = 0;
         foreach ($keys as $name) {
@@ -105,13 +107,12 @@ class Config implements \ArrayAccess
             }
             $i++;
         }
-        
+
         return true;
     }
-    
+
     public function get()
     {
         return $this->config;
     }
-    
 }

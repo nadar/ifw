@@ -1,4 +1,5 @@
 <?php
+
 namespace ifw\validators;
 
 class Required extends \ifw\validators\AbstractValidator
