@@ -16,13 +16,13 @@ Those features are already integrated:
 - Database Component
 - Action Classes
 - Terminal Commands (clis)
+- Assets (only basics js and css files, copy images to cache asset folder)
 
 Todo
 ----
 
 - AR delete
 - AR events (atache behavior to test addError() method)
-- Asset Management
 - Database Migrations
 - Basic Rest implementation
 - User Auth implementation ($app->user)
