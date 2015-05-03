@@ -3,7 +3,7 @@ namespace app\modules\test\controllers;
 
 use Ifw;
 
-class IndexController extends \ifw\core\Controller
+class IndexController extends \ifw\web\Controller
 {
     public $layout = 'main.php';
     
@@ -17,12 +17,14 @@ class IndexController extends \ifw\core\Controller
     }
     */
     
+    /*
     public function behaviors()
     {
         return [
             \ifw\behaviors\Json::className()
         ];
     }
+    */
     
     public function actions()
     {
@@ -36,6 +38,11 @@ class IndexController extends \ifw\core\Controller
         return [
             'sub' => 'POST'  
         ];
+    }
+    
+    public function actionView()
+    {
+        return $this->render('view.php');
     }
     
     /*
