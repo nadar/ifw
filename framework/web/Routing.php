@@ -100,7 +100,13 @@ class Routing extends \ifw\core\Component
 
     private function buildUrl($url, array $params)
     {
-        return (count($params) > 0) ? $url.'?'.http_build_query($params) : $url;
+        if ($this->rewriteEnabled) {
+            return (count($params) > 0) ? $url.'?'.http_build_query($params) : $url;
+        } else {
+            $params['route'] = $url;
+            $url =  '?' . http_build_query($params, '', '&', PHP_QUERY_RFC3986);
+            return str_replace("%2F", "/", $url);
+        }
     }
 
     /**
