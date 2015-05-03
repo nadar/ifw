@@ -13,7 +13,7 @@
 <body>
 <ul>
     <?php foreach($menu as $item): ?>
-        <li><a href="index.php?route=<?php echo $item; ?>"><?php echo $item; ?></a>
+        <li><a href="<?= \ifw\helpers\UrlHelper::to($item, ['foo' => 'bar']); ?>"><?php echo $item; ?></a>
     <?php endforeach; ?>
 </ul>
 <hr />
