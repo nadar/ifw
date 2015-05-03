@@ -1,7 +1,8 @@
 <?php
 namespace ifw\helpers;
 
-class ArrayHelper {
+class ArrayHelper
+{
     
     public static function toObject(array $array)
     {
