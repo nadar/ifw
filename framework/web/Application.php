@@ -15,6 +15,7 @@ class Application extends \ifw\core\Application
             'response' => '\\ifw\\web\\Response',
             'session' => '\\ifw\\web\\Session',
             'view' => '\\ifw\\web\\View',
+            'user' => '\\ifw\\web\\User',
         ];
     }
 
