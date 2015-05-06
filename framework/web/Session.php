@@ -98,6 +98,13 @@ class Session extends \ifw\core\Component
         parent::__get($key);
     }
 
+    public function __unset($key)
+    {
+        if ($this->has($key)) {
+            unset($_SESSION[$key]);
+        }
+    }
+    
     public function has($key)
     {
         $this->ensure();
