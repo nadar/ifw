@@ -42,6 +42,9 @@ class ActiveRecord extends \ifw\core\Model
     {
         parent::init();
         $shema  = \ifw::$app->db->command()->query('DESCRIBE '.static::tableName())->fetchAll();
+        if (empty($shema)) {
+            throw new \ifw\core\Exception("The ActiveRecord table '" . static::tableName() . "' does not exists.");
+        }
         foreach ($shema as $field) {
             $this->_fields[] = $field['Field'];
             if ($field['Key'] == 'PRI') {
