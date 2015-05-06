@@ -2,7 +2,7 @@
 
 namespace ifw\core;
 
-class Object
+abstract class Object
 {
     public function __construct(array $params = [])
     {

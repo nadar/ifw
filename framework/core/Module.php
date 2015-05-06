@@ -2,7 +2,7 @@
 
 namespace ifw\core;
 
-class Module extends \ifw\core\Component
+abstract class Module extends \ifw\core\Component
 {
     const EVENT_BEFORE_CONTROLLER = 'EVENT_BEFORE_CONTROLLER';
 

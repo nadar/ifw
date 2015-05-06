@@ -2,7 +2,7 @@
 
 namespace ifw\core;
 
-class Component extends \ifw\core\Object
+abstract class Component extends \ifw\core\Object
 {
     private $_events = [];
 
