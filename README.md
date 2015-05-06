@@ -28,6 +28,7 @@ Todo
 - User Auth implementation ($app->user)
 - Admin Controllers (how to access?)
 - Rest Controllers (how to access?)
+- Move DI container to ifw static (re-use object on request ... user components?)
 
 INSTALLATION
 ============
