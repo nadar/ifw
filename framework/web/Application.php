@@ -23,6 +23,8 @@ class Application extends \ifw\core\Application
     {
         $route = $this->routing->getRouting($this, $this->request);
 
-        return $this->runRoute($route[0], $route[1], $route[2]);
+        $response = $this->runRoute($route[0], $route[1], $route[2]);
+        $this->response->getHeader();
+        return $response;
     }
 }

@@ -56,6 +56,8 @@ abstract class Application extends \ifw\core\Component
 
         $this->di = new DiContainer();
 
+        $this->addModule('ifw', ['class' => '\\ifw\\Module\\IfwModule']);
+        
         $this->parseModules();
         $this->parseComponents();
 
@@ -66,6 +68,15 @@ abstract class Application extends \ifw\core\Component
         $this->bootstrap();
     }
 
+    public function __get($key)
+    {
+        if ($this->hasComponent($key)) {
+            return $this->getComponent($key);
+        }
+    
+        parent::__get($key);
+    }
+    
     public function bootstrap()
     {
         foreach ($this->modules as $config) {
@@ -75,15 +86,18 @@ abstract class Application extends \ifw\core\Component
         }
     }
 
-    public function __get($key)
+    public function runRoute($module, $controller, $action)
     {
-        if ($this->hasComponent($key)) {
-            return $this->getComponent($key);
+        if (!$this->hasModule($module)) {
+            throw new Exception("The requested module does not exist.");
         }
-
-        parent::__get($key);
+        $module = $this->getModule($module);
+        $controller = $module->runController($controller, $this->controllerNamespace);
+        $response = $controller->runAction($action);
+    
+        return $response;
     }
-
+    
     public function parseModules()
     {
         foreach ($this->modules as $id => $config) {
@@ -93,13 +107,10 @@ abstract class Application extends \ifw\core\Component
             $this->di->append('modules.'.$id, $config['class'], array_merge($config, ['id' => $id]));
         }
     }
-
-    public function runRoute($module, $controller, $action)
+    
+    public function addModule($id, $config)
     {
-        $response = $this->getModule($module)->runController($controller, $this->controllerNamespace)->runAction($action);
-        $this->response->getHeader();
-
-        return $response;
+        $this->modules[$id] = $config;
     }
 
     public function getModule($id)
