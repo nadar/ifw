@@ -22,8 +22,7 @@ class Application extends \ifw\core\Application
     public function run()
     {
         $route = $this->routing->getRouting($this, $this->request);
-
-        $response = $this->runRoute($route[0], $route[1], $route[2]);
+        $response = $this->runRoute(implode("/", $route));
         $this->response->getHeader();
         return $response;
     }

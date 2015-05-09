@@ -20,6 +20,19 @@ abstract class Application extends \ifw\core\Component
 
     public $controllerNamespace = null;
 
+    /**
+     * Contains a map name to the resolved controller route. Example value of 
+     * $controllerNamespace variable:
+     * ```
+     * [
+     *     'myMapName' => ['module' => 'mymodule', 'controller' => 'mycontroller']
+     * ]
+     * ```
+     * 
+     * @var array
+     */
+    public $controllerMap = [];
+    
     protected $loader = null;
 
     abstract public function run();
@@ -67,6 +80,11 @@ abstract class Application extends \ifw\core\Component
 
         $this->bootstrap();
     }
+    
+    public function addControllerMap($map, array $resolveArray)
+    {
+        $this->controllerMap[$map] = $resolveArray;
+    }
 
     public function __get($key)
     {
@@ -86,14 +104,52 @@ abstract class Application extends \ifw\core\Component
         }
     }
 
-    public function runRoute($module, $controller, $action)
+    public function resolveControllerNamespace($mapName)
     {
-        if (!$this->hasModule($module)) {
+        if (array_key_exists($mapName, $this->controllerMap)) {
+            return [$this->controllerMap[$mapName]['module'], $this->controllerMap[$mapName]['controller']];
+        }
+        
+        return [$mapName];
+    }
+    
+    /**
+     * 
+     * @param string $route module/controller/aciton or controllerMap/action or only controllerMap (use default action)
+     * @return string
+     */
+    public function runRoute($route) // before: $module, $controller, $action
+    {
+        $routes = [];
+        foreach (explode("/", $route) as $key => $item) {
+            if ($key == 0) {
+                foreach($this->resolveControllerNamespace($item) as $part) {
+                    $routes[] = $part;
+                }
+            } else {
+                $routes[] = $item;
+            }
+        }
+        
+        if (!isset($routes[1])) {
+            $routes[1] = 'index';
+        }
+        
+        if (!isset($routes[2])) {
+            $routes[2] = 'index';
+        }
+        
+        if (count($routes) !== 3) {
+            throw new Exception("something went absolutly wrong when runing route '$route'.");
+        }
+        
+        if (!$this->hasModule($routes[0])) {
             throw new Exception("The requested module does not exist.");
         }
-        $module = $this->getModule($module);
-        $controller = $module->runController($controller, $this->controllerNamespace);
-        $response = $controller->runAction($action);
+        
+        $module = $this->getModule($routes[0]);
+        $controller = $module->runController($routes[1], $this->controllerNamespace);
+        $response = $controller->runAction($routes[2]);
     
         return $response;
     }

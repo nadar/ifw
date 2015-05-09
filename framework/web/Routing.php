@@ -176,10 +176,11 @@ class Routing extends \ifw\core\Component
         $route = $this->parseRules($route);
         $parts = explode('/', $route);
 
+        /*
         if (!$route || count($parts) !== 3) {
             return [$app->defaultModule, 'index', 'index'];
         }
-
+        */
         return $parts;
     }
 }
