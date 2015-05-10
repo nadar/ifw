@@ -120,6 +120,9 @@ abstract class Application extends \ifw\core\Component
      */
     public function runRoute($route) // before: $module, $controller, $action
     {
+        if (empty($route)) {
+            $route = implode('/', [$this->defaultModule, 'index', 'index']);
+        }
         $routes = [];
         foreach (explode("/", $route) as $key => $item) {
             if ($key == 0) {
@@ -144,7 +147,7 @@ abstract class Application extends \ifw\core\Component
         }
         
         if (!$this->hasModule($routes[0])) {
-            throw new Exception("The requested module does not exist.");
+            throw new Exception("The requested module '{$routes[0]}' does not exist.");
         }
         
         $module = $this->getModule($routes[0]);
@@ -174,6 +177,11 @@ abstract class Application extends \ifw\core\Component
         return ($this->hasModule($id)) ? $this->di->get('modules.'.$id) : false;
     }
 
+    public function getModules()
+    {
+        return $this->modules;
+    }
+    
     public function hasModule($id)
     {
         return array_key_exists($id, $this->modules);
