@@ -33,6 +33,16 @@ class IndexController extends \ifw\web\Controller
         ];
     }
     
+    public function actionUser()
+    {
+        $user = \app\modules\test\models\User::find()->where(['id' => 1])->one();
+        var_dump($user);
+        exit;
+        $identity = \ifw::$app->user->login($user);
+        var_dump($user);
+        exit;
+    }
+    
     public function actionTypes()
     {
         return [
