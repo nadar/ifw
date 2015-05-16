@@ -4,6 +4,11 @@ namespace ifw\helpers;
 
 class FileHelper
 {
+    public static function copy($source, $destination)
+    {
+        
+    }
+    
     public static function copyr($source, $destination, array $fileTypeFilter = ['css', 'js', 'png', 'jpg', 'gif', 'less'])
     {
         $dir = opendir($source);
@@ -22,4 +27,23 @@ class FileHelper
         }
         closedir($dir);
     }
+    
+    public static function readdir($dir)
+    {
+        if (!file_exists($dir)) {
+            return [];
+        }
+        $files = [];
+        foreach(scandir($dir, SCANDIR_SORT_ASCENDING) as $item) {
+            if (substr($item, 0, 1) !== '.') {
+                $files[] = [
+                    'file' => $dir . DIRECTORY_SEPARATOR . $item,
+                    'name' => $item,
+                    'dir' => $dir,
+                ];
+            }
+        }
+        
+        return $files;
+    } 
 }
