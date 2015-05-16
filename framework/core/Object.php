@@ -69,10 +69,16 @@ abstract class Object
     {
         return method_exists($this, $methodName);
     }
+    
+    public function getBasePath()
+    {
+        $class = new \ReflectionClass($this);
+        return dirname($class->getFileName());
+    }
 
     public function getMethodArguments($methodName)
     {
-        $reflection = new \ReflectionMethod($this->className(), $methodName);
+        $reflection = new \ReflectionMethod($this, $methodName);
         $params = [];
         foreach ($reflection->getParameters() as $arg) {
             $params[] = \ifw\helpers\ArrayHelper::toObject([
