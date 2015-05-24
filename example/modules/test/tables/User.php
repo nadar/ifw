@@ -10,7 +10,7 @@ class User extends \ifw\core\BaseTable
     public function fields()
     {
         return [
-            'id' => ['int' => 11, 'default' => 0],
+            'id' => ['int' => 11, 'AUTO_INCREMENT'],
             'firstname' => ['varchar' => 200, 'NOT NULL'],
             'lastname' => ['varchar' => 120, 'NOT NULL'],
             'mail' => ['varchar' => 80],
