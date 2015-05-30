@@ -2,6 +2,7 @@
 
 namespace ifw\components;
 
+use Ifw;
 use ifw\core\Exception;
 
 /**
@@ -56,11 +57,16 @@ class Db extends \ifw\core\Component
     public function command()
     {
         try {
-            return \ifw::createObject('\\ifw\\db\\Command', ['dbo' => $this->getConnection()]);
+            return Ifw::createObject('\\ifw\\db\\Command', ['dbo' => $this->getConnection()]);
             //return $this;
         } catch (\PDOException $e) {
             throw new Exception($e->getMessage());
         }
+    }
+    
+    public function tableSchema($table)
+    {
+        return Ifw::createObject('\\ifw\\db\\TableSchema', ['dbo' => $this->getConnection(), 'table' => $table]);
     }
 
     public function closeConnection()
