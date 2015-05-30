@@ -26,6 +26,10 @@ abstract class Object
 
     public function __get($key)
     {
+        $getter = 'get' . ucfirst($key);
+        if ($this->hasMethod($getter)) {
+            return $this->$getter();
+        }
         if (!$this->hasProperty($key)) {
             throw new \Exception("The requested property '$key' does not exists in the class '".$this->getClass().'"');
         }
