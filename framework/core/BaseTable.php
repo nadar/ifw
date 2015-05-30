@@ -77,28 +77,25 @@ abstract class BaseTable extends \ifw\core\Object
     
     public function compare()
     {
-        // see if table exists
-        $shema = $this->db()->query('DESCRIBE '.$this->name())->fetchAll();
-        if (count($shema) == 0) {
+        $table = Ifw::$app->db->tableSchema($this->name());
+        
+        if (!$table->exists()) {
             $sql = $this->queryCreateTable();
-            var_dump($sql);
             try {
                 $db = Ifw::$app->db->getConnection();
                 $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-                $r = $db->exec($sql);
-                var_dump($r);
-                
+                $response = $db->exec($sql);
             } catch (Exception $e) {
                 var_dump($e->getMessage);
             }
-            /*
-            $response = $this->db()->query($sql)->getStatement();
-            var_dump($response);
-            */
-            //$exec = $this->db()->query);
-            //var_dump($exec);
         } else {
-            echo "TABLE EXISTS... compare";
+            foreach($this->fields() as $name => $props) {
+                if ($table->existField($name)) {
+                    echo "$name existiert" . PHP_EOL;
+                } else {
+                    echo "$name existiert noch nicht!" . PHP_EOL;
+                }
+            }
         }
     }
 }
