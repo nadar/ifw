@@ -23,7 +23,10 @@ class View extends \ifw\core\Component
 
     public function findViewFile($viewFile, $path)
     {
-        $view = \ifw::$app->getAlias(implode(DIRECTORY_SEPARATOR, [$path, $viewFile]));
+        if (!pathinfo($viewFile, PATHINFO_EXTENSION)) {
+            $viewFile = $viewFile . '.php';
+        }
+        $view = Ifw::$app->getAlias(implode(DIRECTORY_SEPARATOR, [$path, $viewFile]));
 
         if (!file_exists($view)) {
             throw new \Exception("The view File '$view' does not exists.");
