@@ -72,4 +72,28 @@ class TableSchema extends \ifw\core\Object
         
         return $this->_fields;
     }
+    
+    /**
+     * ALTER TABLE tbl_Country
+     * DROP COLUMN IsDeleted 
+     * 
+     * @param $field is_deleted
+     */
+    public function dropField($field)
+    {
+        $q = $this->dbo->prepare("ALTER TABLE " . $this->table . " DROP COLUMN " . $field);
+        $r = $q->execute();
+        return $r;
+    }
+    
+    /**
+     * @param unknown $name is_deleted
+     * @param unknown $schema TINYINT(1) NOT NULL
+     */
+    public function addField($name, $schema)
+    {
+        $q = $this->dbo->prepare("ALTER TABLE " . $this->table . " ADD COLUMN `$name` " . $schema);
+        $r = $q->execute();
+        return $r;
+    }
 }
