@@ -51,21 +51,40 @@ abstract class BaseTable extends \ifw\core\Object
         return Ifw::$app->db->command();
     }
     
+    private function fieldSchema($fieldName, $opts)
+    {
+        $part = [];
+        $part[] = $fieldName;
+        foreach($opts as $k => $v) {
+            if (is_int($k)) { // not field type
+                $part[] = $v;
+            } else {
+                $part[] = "$k($v)";
+            }
+        }
+        
+        return implode(" ", $part);
+    }
+    
+    private function fieldStructure($opts)
+    {
+        $part = [];
+        foreach($opts as $k => $v) {
+            if (is_int($k)) { // not field type
+                $part[] = $v;
+            } else {
+                $part[] = "$k($v)";
+            }
+        }
+        
+        return implode(" ", $part);
+    }
+    
     private function queryCreateTable()
     {
         $imp = [];
         foreach ($this->fields() as $fieldName => $opts) {
-            $part = [];
-            $part[] = $fieldName;
-            foreach($opts as $k => $v) {
-                if (is_int($k)) { // not field type
-                    $part[] = $v;
-                } else {
-                    $part[] = "$k($v)";
-                }
-            }
-            
-            $imp[] = implode(" ", $part);
+            $imp[] = $this->fieldSchema($fieldName, $opts);
         }
         foreach($this->pk() as $key) {
             $imp[] = 'PRIMARY KEY (' . implode(",", $this->pk()) . ')';
@@ -91,9 +110,11 @@ abstract class BaseTable extends \ifw\core\Object
         } else {
             foreach($this->fields() as $name => $props) {
                 if ($table->existField($name)) {
-                    echo "$name existiert" . PHP_EOL;
+                    //echo "$name existiert" . PHP_EOL;
+                    
                 } else {
-                    echo "$name existiert noch nicht!" . PHP_EOL;
+                    $table->addField($name, $this->fieldStructure($props));
+                    //echo "$name existiert noch nicht!" . PHP_EOL;
                 }
             }
         }
