@@ -42,7 +42,7 @@ abstract class Controller extends \ifw\core\Component
     {
         Ifw::trace("run action '$action'");
 
-        $request = \ifw::$app->request;
+        $request = Ifw::$app->request;
         $this->dispatchEvent(self::EVENT_BEFORE_ACTION);
         $actions = $this->actions();
 
