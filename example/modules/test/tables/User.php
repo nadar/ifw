@@ -14,7 +14,8 @@ class User extends \ifw\core\BaseTable
             'firstname' => ['varchar' => 200, 'NOT NULL'],
             'lastname' => ['varchar' => 120, 'NOT NULL'],
             'mail' => ['varchar' => 80],
-            'text' => ['text', 'NOT NULL']
+            'text' => ['text', 'NOT NULL'],
+            'hans' => ['varchar' => 80],
         ];
     }
     
